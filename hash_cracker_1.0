@@ -1,0 +1,61 @@
+#-----------Welcome to the Password Cracker!-----------
+#To start the code the user will input how many digits 
+#are in the password that is hashed.
+#------------------------------------------------------
+#This script will uses a user input password, as marked
+#by the "password" value in the code, and tell the user
+#how many password attemps it takes to brute force the 
+#passcode. Additionally it will print the hash value.
+#This is to be an educational tool for how hashes work
+#and how they can be uncovered.
+#------------------------------------------------------
+#If chosen by the user, they may also put a value into 
+#"hashed password" value and slightly alter the code to
+#find the password of the user selected hash. Be weary,
+#annything over six digits will take over 20 minutes to
+#brute force. The more digits, the more exponentially  
+#longer it will take to crack.This code is NOT to be   
+#misused for personal gain or to hurt others. Please
+#use this code ethically and for educational purposes only.
+
+
+  
+import hashlib
+import itertools
+
+#enter password here
+password = ""
+
+passwordHasher = hashlib.md5()
+passwordHasher.update(password.encode('utf-8'))
+passwordDigest = passwordHasher.hexdigest()
+
+#optional below, enter hash (requires some small changes to code):
+hashedPassword = ''
+
+characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!?$@#%^&*()-_=+[]|;:'',<.>/" + '""' + f"\{{}}"
+count = 0
+
+characters = list(characters)
+
+print('---Welcome to the password cracker!---')
+length_val = int(input('Please enter the length of your password: '))
+print("")
+possible_combinations = itertools.product(characters, repeat=length_val)
+
+
+
+for index in possible_combinations:
+    num = (''.join(index))
+    userHasher = hashlib.md5()
+    userHasher.update(num.encode('utf-8'))
+    userDigest = userHasher.hexdigest()
+    count += 1
+    if userDigest == passwordDigest:
+        print('PASSWORD CRACKED!')
+        print(f'PASSWORD: {num}')
+        break
+
+print(f" It took {count} attempt(s)")
+print(f"Hash function: {userDigest}")
+
